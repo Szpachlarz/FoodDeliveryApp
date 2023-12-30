@@ -1,0 +1,57 @@
+﻿﻿@using FoodDeliveryApp.ViewModels
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Rejestracja";
+}
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Błąd!</b> - @TempData["Error"]</span>
+            </div>
+        }
+        <div class="row d-flex align-items-center justify-content-center h-100">
+
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                <form asp-action="Register">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-outline mb-4">
+                        <input asp-for="Username" id="login" class="form-control" />
+                        <label asp-for="Username" class="form-label" for="username"></label>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input asp-for="EmailAddress" id="mail" class="form-control" />
+                        <label asp-for="EmailAddress" class="form-label" for="mail"></label>
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input asp-for="Password" id="pass1" class="form-control" />
+                        <label asp-for="Password" class="form-label" for="pass1"></label>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input asp-for="ConfirmPassword" id="pass2" class="form-control" />
+                        <label asp-for="ConfirmPassword" class="form-label" for="pass2"></label>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check d-flex justify-content-center mb-4">
+                        <input asp-for="IsAccepted" class="form-check-input me-2" type="checkbox" />
+                        <label asp-for="IsAccepted" class="form-check-label">Zapoznałem się z <a href="#">regulaminem serwisu</a> i go akceptuję.</label>
+                        <span asp-validation-for="IsAccepted" class="text-danger"></span>
+                    </div>
+
+                    <center><button type="submit" class="btn btn-primary btn-lg btn-block">Utwórz nowe konto</button></center>
+
+                    <div class="mb-3">
+                        <a class="btn btn-color-two w-100" asp-action="Login" asp-controller="Authorization">Masz już konto? Zaloguj się!</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

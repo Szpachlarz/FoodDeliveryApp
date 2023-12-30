@@ -1,0 +1,23 @@
+﻿﻿@using FoodDeliveryApp.ViewModels
+@model RestaurantIndexViewModel
+@{
+    Layout = "_RestaurantLayout";
+    ViewData["Title"] = "Panel restauracji";
+}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow bg-primary text-light">
+                    <div class="card-body">
+                        <p class="card-tex">Liczba dań: @Model.DishCount</p>
+                        <a asp-controller="Restaurant" asp-action="DishList" class="text-light"> Przeglądaj dania </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

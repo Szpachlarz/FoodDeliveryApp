@@ -1,0 +1,55 @@
+﻿@using FoodDeliveryApp.ViewModels
+@model AddDishViewModel
+
+@{
+    Layout = "_RestaurantLayout";
+    ViewData["Title"] = "Panel restauracji";
+}
+
+<h1 class="text-muted px-2">Dodaj danie</h1>
+<hr class="divider mt-0">
+
+<div class="row m-2">
+    <div class="col-12 ">
+        <form method="post" asp-action="Add" enctype="multipart/form-data">
+        <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
+            <div class="row m-2">
+                <div class="col-12">
+                    <div class="forms-inputs">
+                        <div class="form-floating">
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="Nazwa dania" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <span class="mx-2 mt-1 errorTextColor"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-2">
+                <div class="col-12">
+                    <div class="forms-inputs">
+                        <div class="form-floating">
+                            <input asp-for="Ingredients" class="form-control form-control-lg" placeholder="Składniki" />
+                            <span asp-validation-for="Ingredients" class="text-danger"></span>
+                        </div>
+                        <span class="mx-2 mt-1 errorTextColor"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-2" id="add-category">
+                <div class="col-12">
+                    <div class="forms-inputs">
+                        <div class="form-floating">
+                            <select asp-for="DishCategoryId" asp-items="ViewBag.DishCategories" class="form-control" id="DishCategory" list="list-author" autocomplete="off" placeholder="" name="DishCategoryId"></select>
+                            <label for="DishCategoryId">Kategoria</label>
+                        </div>
+                        <span class="mx-2 mt-1 errorTextColor"></span>
+                    </div>
+                </div>
+            <div class="row m-2">
+                <div class="float-end">
+                    <button class="btn btn-block btn-success btn-lg" type="submit">Dodaj</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

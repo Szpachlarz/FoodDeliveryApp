@@ -1,0 +1,92 @@
+﻿﻿@using FoodDeliveryApp.ViewModels
+@model DishListViewModel
+@{
+    Layout = "_RestaurantLayout";
+    ViewData["Title"] = "Panel restauracji";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<h1 class="text-muted px-2">Dania</h1>
+<hr class="divider mt-0">
+
+@*@<partial name="_pager" model="@pager" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="row mt-3 mx-0 px-0">
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchBox" value onkeyup="filterButtonClick(4)" placeholder="Wyszukaj autora">
+                    <button type="button" class="btn bg-transparent clrBtn" onclick="delSearch()" style="margin-left: -40px; z-index: 100;">
+                        <i class="bi bi-x"></i>
+                    </button>
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+*@
+<p>
+    <a asp-action="Add" class="btn btn-primary"> <i class="fa-solid fa-circle-plus"></i>Dodaj</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Składniki
+            </th>
+            <th>
+                Kategoria
+            </th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Dishes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ingredients)
+                </td>
+                <td>
+                    @if (item.DishCategoryId != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.DishCategory.Name)
+                    }
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@item.Id" style="text-align: center;">
+                        <div style="text-align: center;">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning" style="margin-right: 20px;">
+                                <i class="bi-pen"></i>
+                            </a>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć rekord?')">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
