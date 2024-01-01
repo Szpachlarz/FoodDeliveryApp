@@ -27,6 +27,11 @@ namespace FoodDeliveryApp.Repository
             return await _context.Dishes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Dish?> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Dishes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public bool Add(Dish dish)
         {
             _context.Add(dish);

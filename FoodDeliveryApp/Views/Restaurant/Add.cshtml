@@ -45,6 +45,18 @@
                         <span class="mx-2 mt-1 errorTextColor"></span>
                     </div>
                 </div>
+            </div>
+            <div class="row m-2" id="add-category">
+                <div class="col-12">
+                    <div class="forms-inputs">
+                        <div class="form-floating">
+                            <input asp-for="Image" class="form-control" type="file" autocomplete="off" placeholder="Image" name="Image" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                        <span class="mx-2 mt-1 errorTextColor"></span>
+                    </div>
+                </div>
+            </div>
             <div class="row m-2">
                 <div class="float-end">
                     <button class="btn btn-block btn-success btn-lg" type="submit">Dodaj</button>

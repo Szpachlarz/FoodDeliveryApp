@@ -9,8 +9,9 @@ namespace FoodDeliveryApp.ViewModels
         public string Name { get; set; }
         public string Ingredients { get; set; }
         public string AppUserId { get; set; }
+        public IFormFile Image { get; set; }
 
         [ForeignKey("DishCategory")]
-        public int DishCategoryId { get; set; }
+        public int? DishCategoryId { get; set; }
     }
 }

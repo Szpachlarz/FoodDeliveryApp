@@ -1,9 +1,12 @@
 ﻿using FoodDeliveryApp.Data;
 using FoodDeliveryApp.Interface;
+using FoodDeliveryApp.Migrations;
 using FoodDeliveryApp.Models;
+using FoodDeliveryApp.Services;
 using FoodDeliveryApp.Utils;
 using FoodDeliveryApp.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +20,14 @@ namespace FoodDeliveryApp.Controllers
         public readonly IDishRepository _dishRepository;
         public readonly IDishCategoryRepository _dishCategoryRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPhotoService _photoService;
 
-        public RestaurantController(IDishRepository dishRepository,  IHttpContextAccessor httpContextAccessor, IDishCategoryRepository dishCategoryRepository)
+        public RestaurantController(IDishRepository dishRepository,  IHttpContextAccessor httpContextAccessor, IDishCategoryRepository dishCategoryRepository, IPhotoService photoService)
         {
             _dishRepository = dishRepository;
             _httpContextAccessor = httpContextAccessor;
             _dishCategoryRepository = dishCategoryRepository;
+            _photoService = photoService;
         }
 
         [HttpGet]
@@ -96,12 +101,15 @@ namespace FoodDeliveryApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var result = await _photoService.AddPhotoAsync(dishVM.Image);
+
                 var dish = new Dish
                 {
                     Id = dishVM.Id,
                     Name = dishVM.Name,
                     Ingredients = dishVM.Ingredients,
                     DishCategoryId = dishVM.DishCategoryId,
+                    Image = result.Url.ToString(),
                     RestaurantId = dishVM.AppUserId
                 };
                 _dishRepository.Add(dish);
@@ -119,14 +127,23 @@ namespace FoodDeliveryApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var curRestaurantID = _httpContextAccessor.HttpContext?.User.GetUserId();
             var dish = await _dishRepository.GetByIdAsync(id);
             if (dish == null) return View("Error");
+            var categories = await _dishCategoryRepository.GetAll(curRestaurantID);
+            ViewData["DishCategories"] = new SelectList((System.Collections.IEnumerable)categories, "Id", "Name");
             var dishVM = new EditDishViewModel
             {
                 Id = id,
                 Name = dish.Name,
                 Ingredients = dish.Ingredients,
+                DishCategoryId = dish.DishCategoryId,
+                URL = dish.Image,
                 AppUserId = curRestaurantID
             };
             return View(dishVM);
@@ -134,7 +151,7 @@ namespace FoodDeliveryApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditDishViewModel dishVM)
+        public async Task<IActionResult> Edit(int id, EditDishViewModel dishVM)
         {
             if (!ModelState.IsValid)
             {
@@ -142,11 +159,33 @@ namespace FoodDeliveryApp.Controllers
                 return View(dishVM);
             }
 
+            var dishResult = await _dishRepository.GetByIdAsyncNoTracking(id);
+
+            if (dishResult == null)
+            {
+                return View("Error");
+            }
+
+            var photoResult = await _photoService.AddPhotoAsync(dishVM.Image);
+
+            if (photoResult.Error != null)
+            {
+                ModelState.AddModelError("Image", "Photo upload failed");
+                return View(dishVM);
+            }
+
+            if (!string.IsNullOrEmpty(dishResult.Image))
+            {
+                _ = _photoService.DeletePhotoAsync(dishResult.Image);
+            }
+
             var dish = new Dish
             {
                 Id = dishVM.Id,
                 Name = dishVM.Name,
                 Ingredients = dishVM.Ingredients,
+                DishCategoryId = dishVM.DishCategoryId,
+                Image = photoResult.Url.ToString(),
                 RestaurantId = dishVM.AppUserId
             };
 
@@ -171,6 +210,11 @@ namespace FoodDeliveryApp.Controllers
             if (dishDetails == null)
             {
                 return View("Error");
+            }
+
+            if (!string.IsNullOrEmpty(dishDetails.Image))
+            {
+                _ = _photoService.DeletePhotoAsync(dishDetails.Image);
             }
 
             _dishRepository.Delete(dishDetails);
