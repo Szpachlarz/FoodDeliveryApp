@@ -147,6 +147,16 @@ namespace FoodDeliveryApp.Data
                         Email = adminUserEmail,
                         EmailConfirmed = true,
                         Status = 0,
+                        Address = new Address()
+                        {
+                            Street = "Zachodnia",
+                            Voivodeship = "Śląskie",
+                            ZipCode = "44-100",
+                            City = new City()
+                            {
+                                Name = "Gliwice"
+                            }
+                        }
                     };
                     await userManager.CreateAsync(newAdminUser, "Haslo@123");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -163,6 +173,16 @@ namespace FoodDeliveryApp.Data
                         Email = appUserEmail,
                         EmailConfirmed = true,
                         Status = 0,
+                        Address = new Address()
+                        {
+                            Street = "Wschodnia",
+                            Voivodeship = "Śląskie",
+                            ZipCode = "41-800",
+                            City = new City()
+                            {
+                                Name = "Zabrze"
+                            }
+                        }
                     };
                     await userManager.CreateAsync(newAppUser, "Haslo@456");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
@@ -179,6 +199,16 @@ namespace FoodDeliveryApp.Data
                         Email = restaurantUserEmail,
                         EmailConfirmed = true,
                         Status = 0,
+                        Address = new Address()
+                        {
+                            Street = "Południowa",
+                            Voivodeship = "Śląskie",
+                            ZipCode = "40-000",
+                            City = new City()
+                            {
+                                Name = "Katowice"
+                            }
+                        }
                     };
                     await userManager.CreateAsync(newRestaurantUser, "Haslo@789");
                     await userManager.AddToRoleAsync(newRestaurantUser, UserRoles.Restaurant);

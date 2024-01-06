@@ -7,7 +7,8 @@ namespace FoodDeliveryApp.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Ingredients { get; set; }
-        public string URL { get; set; }
+        public double Price { get; set; }
+        public string? URL { get; set; }
         public IFormFile Image { get; set; }
         public string AppUserId { get; set; }
 

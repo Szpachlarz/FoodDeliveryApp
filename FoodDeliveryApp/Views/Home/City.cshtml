@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Smaczne.pl";
+    Layout = "_IndexLayout";
+}
+<h1 class="text-muted px-2">Lubię jeść dzieci
+    @foreach (var item in Model)
+    {
+        <p class="card-text">@item.UserName</p>
+    }
+</h1>

@@ -1,6 +1,5 @@
 ﻿using FoodDeliveryApp.Data;
 using FoodDeliveryApp.Interface;
-using FoodDeliveryApp.Migrations;
 using FoodDeliveryApp.Models;
 using FoodDeliveryApp.Services;
 using FoodDeliveryApp.Utils;
@@ -108,6 +107,7 @@ namespace FoodDeliveryApp.Controllers
                     Id = dishVM.Id,
                     Name = dishVM.Name,
                     Ingredients = dishVM.Ingredients,
+                    Price = dishVM.Price,
                     DishCategoryId = dishVM.DishCategoryId,
                     Image = result.Url.ToString(),
                     RestaurantId = dishVM.AppUserId
@@ -142,6 +142,7 @@ namespace FoodDeliveryApp.Controllers
                 Id = id,
                 Name = dish.Name,
                 Ingredients = dish.Ingredients,
+                Price = dish.Price,
                 DishCategoryId = dish.DishCategoryId,
                 URL = dish.Image,
                 AppUserId = curRestaurantID
